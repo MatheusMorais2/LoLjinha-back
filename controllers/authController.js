@@ -20,7 +20,7 @@ export async function signUp(req, res) {
       .collection("users")
       .insertOne({ ...user, password: encryptedPassword });
 
-    res, sendStatus(201);
+    res.sendStatus(201);
     return;
   } catch {
     res.sendStatus(500);
