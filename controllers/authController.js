@@ -6,6 +6,13 @@ import db from "../db.js";
 export async function signUp(req, res) {
   const user = req.body;
 
+  if (user.password !== user.confirmPassword) {
+    res.status(400).send("As senhas sao diferentes");
+    return;
+  }
+
+  delete user.confirmPassword;
+
   try {
     let isEmailduplicate = await db
       .collection("users")
@@ -20,7 +27,7 @@ export async function signUp(req, res) {
       .collection("users")
       .insertOne({ ...user, password: encryptedPassword });
 
-    res, sendStatus(201);
+    res.sendStatus(201);
     return;
   } catch {
     res.sendStatus(500);
