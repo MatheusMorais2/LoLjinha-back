@@ -6,7 +6,7 @@ import loginSchemaValidation from "../middlewares/loginSchemaValidation.js";
 
 const authRouter = Router();
 
-authRouter.post("/signup", signupSchemaValidation, signUp);
-authRouter.post("/login", loginSchemaValidation, logIn);
+authRouter.post("/auth/sign-up", signupSchemaValidation, signUp);
+authRouter.post("/auth/login", loginSchemaValidation, logIn);
 
 export default authRouter;
