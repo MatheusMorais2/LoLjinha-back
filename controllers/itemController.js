@@ -12,3 +12,14 @@ export async function insertItems(req, res) {
     res.sendStatus(500);
   }
 }
+
+export async function getItems(req, res) {
+  try {
+    const listItens = await db.collection("items").find().limit(8).toArray();
+
+    res.send(listItens);
+  } catch (erro) {
+    console.log(erro);
+    res.sendStatus(500);
+  }
+}
