@@ -1,4 +1,5 @@
 import db from "../db.js";
+import { ObjectId } from "mongodb";
 
 export async function insertItems(req, res) {
   const items = req.body;
@@ -20,6 +21,23 @@ export async function getItems(req, res) {
     res.send(listItens);
   } catch (erro) {
     console.log(erro);
+    res.sendStatus(500);
+  }
+}
+
+export async function showItem(req, res) {
+  const { id } = req.params;
+  try {
+    const item = await db
+      .collection("items")
+      .findOne({ _id: new ObjectId(id) });
+
+    if (!item) {
+      res.sendStatus(404);
+      return;
+    }
+    res.send(item);
+  } catch (error) {
     res.sendStatus(500);
   }
 }
