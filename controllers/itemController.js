@@ -3,8 +3,8 @@ import db from "../db.js";
 export async function insertItems(req, res) {
   const items = req.body;
   try {
-    items.map((elem) => {
-      db.collection("items").insertOne(elem);
+    items.map(async (elem) => {
+      await db.collection("items").insertOne(elem);
     });
     res.sendStatus(201);
     return;
