@@ -18,7 +18,7 @@ export async function putItemIntoCart(req, res) {
       return res.status(404).send("Item not found");
     }
 
-    const updatedCart = [...user.cart, item];
+    const updatedCart = [...user.cart, { item: item, quantity: 1 }];
 
     const update = await db
       .collection("users")
