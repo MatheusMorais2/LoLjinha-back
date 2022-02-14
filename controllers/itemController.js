@@ -19,8 +19,8 @@ export async function getItems(req, res) {
     const listItens = await db.collection("items").find().limit(8).toArray();
 
     res.send(listItens);
-  } catch (erro) {
-    console.log(erro);
+  } catch (error) {
+    console.log(error);
     res.sendStatus(500);
   }
 }

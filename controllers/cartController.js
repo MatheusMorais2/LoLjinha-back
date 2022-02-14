@@ -25,7 +25,6 @@ export async function putItemIntoCart(req, res) {
       .updateOne({ _id: user._id }, { $set: { cart: updatedCart } });
 
     if (update) {
-      console.log("Colocou no carrinho");
       return res.sendStatus(200);
     }
   } catch {
@@ -39,4 +38,14 @@ export async function getCart(req, res) {
     return res.sendStatus(403);
   }
   res.status(200).send(user.cart);
+}
+
+export async function clearCart(req, res) {
+  const user = res.locals.user;
+
+  const aux = await db
+    .collection("users")
+    .updateOne({ _id: new ObjectId(user._id) }, { $set: { cart: [] } });
+
+  res.status(200).send(user);
 }
