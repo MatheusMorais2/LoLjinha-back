@@ -41,3 +41,52 @@ export async function showItem(req, res) {
     res.sendStatus(500);
   }
 }
+
+export async function getAllItems(req, res) {
+  try {
+    const listItens = await db.collection("items").find().toArray();
+    res.send(listItens);
+  } catch (erro) {
+    console.log(erro);
+    res.sendStatus(500);
+  }
+}
+
+export async function getArmor(req, res) {
+  try {
+    const listItens = await db
+      .collection("items")
+      .find({ type: "Armor" })
+      .toArray();
+    res.send(listItens);
+  } catch (erro) {
+    console.log(erro);
+    res.sendStatus(500);
+  }
+}
+
+export async function getWeapon(req, res) {
+  try {
+    const listItens = await db
+      .collection("items")
+      .find({ type: "Weapon" })
+      .toArray();
+    res.send(listItens);
+  } catch (erro) {
+    console.log(erro);
+    res.sendStatus(500);
+  }
+}
+
+export async function getHeal(req, res) {
+  try {
+    const listItens = await db
+      .collection("items")
+      .find({ type: "Heal" })
+      .toArray();
+    res.send(listItens);
+  } catch (erro) {
+    console.log(erro);
+    res.sendStatus(500);
+  }
+}
