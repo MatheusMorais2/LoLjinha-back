@@ -43,9 +43,62 @@ export async function getCart(req, res) {
 export async function clearCart(req, res) {
   const user = res.locals.user;
 
-  const aux = await db
-    .collection("users")
-    .updateOne({ _id: new ObjectId(user._id) }, { $set: { cart: [] } });
+  try {
+    await db
+      .collection("users")
+      .updateOne({ _id: new ObjectId(user._id) }, { $set: { cart: [] } });
 
-  res.status(200).send(user);
+    return res.status(200).send(user);
+  } catch {
+    console.log("caiu no catch");
+    return res.sendStatus(500);
+  }
+}
+
+export async function addOne(req, res) {
+  const user = res.locals.user;
+  const productId = req.params.id;
+
+  try {
+    const aux = await db.collection("users").updateOne(
+      { _id: new ObjectId(user._id) },
+      { $inc: { "cart.$[item].quantity": 1 } },
+      {
+        arrayFilters: [
+          {
+            "item._id": { _id: new ObjectId(productId) },
+          },
+        ],
+      }
+    );
+    console.log("aux: ", aux);
+    return res.status(200).send(user);
+  } catch {
+    res.sendStatus(500);
+  }
+}
+
+export async function removeOne(req, res) {
+  const user = res.locals.user;
+  const productId = req.params.id;
+
+  try {
+    const aux = await db.collection("users").updateOne(
+      { _id: new ObjectId(user._id) },
+      { $inc: { "cart.$[element].quantity": -1 } },
+      {
+        arrayFilters: [
+          {
+            element: { _id: new ObjectId(productId) },
+          },
+        ],
+      }
+    );
+
+    console.log("aux: ", aux);
+
+    return res.status(200).send(user);
+  } catch {
+    res.sendStatus(500);
+  }
 }
