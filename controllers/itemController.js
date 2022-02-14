@@ -4,8 +4,8 @@ import { ObjectId } from "mongodb";
 export async function insertItems(req, res) {
   const items = req.body;
   try {
-    items.map((elem) => {
-      db.collection("items").insertOne(elem);
+    items.map(async (elem) => {
+      await db.collection("items").insertOne(elem);
     });
     res.sendStatus(201);
     return;
@@ -19,8 +19,8 @@ export async function getItems(req, res) {
     const listItens = await db.collection("items").find().limit(8).toArray();
 
     res.send(listItens);
-  } catch (erro) {
-    console.log(erro);
+  } catch (error) {
+    console.log(error);
     res.sendStatus(500);
   }
 }

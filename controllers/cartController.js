@@ -18,7 +18,7 @@ export async function putItemIntoCart(req, res) {
       return res.status(404).send("Item not found");
     }
 
-    const updatedCart = [...user.cart, item];
+    const updatedCart = [...user.cart, { item: item, quantity: 1 }];
 
     const update = await db
       .collection("users")
@@ -30,4 +30,22 @@ export async function putItemIntoCart(req, res) {
   } catch {
     res.sendStatus(500);
   }
+}
+
+export async function getCart(req, res) {
+  const user = res.locals.user;
+  if (!user) {
+    return res.sendStatus(403);
+  }
+  res.status(200).send(user.cart);
+}
+
+export async function clearCart(req, res) {
+  const user = res.locals.user;
+
+  const aux = await db
+    .collection("users")
+    .updateOne({ _id: new ObjectId(user._id) }, { $set: { cart: [] } });
+
+  res.status(200).send(user);
 }
